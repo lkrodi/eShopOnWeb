@@ -6,10 +6,10 @@ on: [push, workflow_dispatch]
 #Environment variables https://docs.github.com/en/actions/learn-github-actions/environment-variables
 env:
   RESOURCE-GROUP: RG-eshowonweb-rec
-  LOCATION: eastus
+  LOCATION: eastasia
   TEMPLATE-FILE: infra/webapp.bicep
   SUBSCRIPTION-ID: 0f97bab3-c68d-4080-bf84-16817d6e79d3
-  WEBAPP-NAME: eshoponweb-webapp-lkrodi7891
+  WEBAPP-NAME: eshoponweb-webapp-NAME
 
 jobs:
   #Build, test and publish .net web project in repository
@@ -78,13 +78,13 @@ jobs:
            
     # Deploy Azure WebApp using Bicep file
     - name: deploy
-      uses: azure/arm-deploy@v1  # Cambiar de v2 a v1
+      uses: azure/arm-deploy@v2
       with:
         subscriptionId: ${{ env.SUBSCRIPTION-ID }}
         resourceGroupName: ${{ env.RESOURCE-GROUP }}
         template: bicep-template/webapp.bicep
         parameters: 'webAppName=${{ env.WEBAPP-NAME }} location=${{ env.LOCATION }}'
-        failOnStdErr: false  
+        failOnStdErr: false   
     
     # Publish website to Azure App Service (WebApp)
     # Step disabled due to issue where the site sometimes can't be found: https://github.com/microsoft/pipelines-appservice-lib/issues/56. Instead deploy using CLI
